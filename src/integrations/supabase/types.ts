@@ -14,7 +14,276 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      app_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          metadata: Json
+          platform: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          platform?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          platform?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      expenses: {
+        Row: {
+          amount: number
+          category: string
+          created_at: string
+          description: string
+          id: string
+          reference_month: number
+          reference_year: number
+          user_id: string
+        }
+        Insert: {
+          amount?: number
+          category: string
+          created_at?: string
+          description?: string
+          id?: string
+          reference_month: number
+          reference_year: number
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          reference_month?: number
+          reference_year?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goals: {
+        Row: {
+          created_at: string
+          current_amount: number
+          deadline: string | null
+          description: string
+          id: string
+          is_completed: boolean
+          target_amount: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_amount?: number
+          deadline?: string | null
+          description: string
+          id?: string
+          is_completed?: boolean
+          target_amount?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_amount?: number
+          deadline?: string | null
+          description?: string
+          id?: string
+          is_completed?: boolean
+          target_amount?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      incomes: {
+        Row: {
+          created_at: string
+          extra_income: number
+          id: string
+          reference_month: number
+          reference_year: number
+          salary: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          extra_income?: number
+          id?: string
+          reference_month: number
+          reference_year: number
+          salary?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          extra_income?: number
+          id?: string
+          reference_month?: number
+          reference_year?: number
+          salary?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      monthly_summaries: {
+        Row: {
+          balance: number
+          biggest_category: string | null
+          created_at: string
+          id: string
+          reference_month: number
+          reference_year: number
+          total_expenses: number
+          total_income: number
+          user_id: string
+          work_days_cost: number
+        }
+        Insert: {
+          balance?: number
+          biggest_category?: string | null
+          created_at?: string
+          id?: string
+          reference_month: number
+          reference_year: number
+          total_expenses?: number
+          total_income?: number
+          user_id: string
+          work_days_cost?: number
+        }
+        Update: {
+          balance?: number
+          biggest_category?: string | null
+          created_at?: string
+          id?: string
+          reference_month?: number
+          reference_year?: number
+          total_expenses?: number
+          total_income?: number
+          user_id?: string
+          work_days_cost?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          plan: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          plan?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          plan?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      share_cards: {
+        Row: {
+          card_data: Json
+          created_at: string
+          id: string
+          share_token: string
+          user_id: string
+          views_count: number
+        }
+        Insert: {
+          card_data?: Json
+          created_at?: string
+          id?: string
+          share_token: string
+          user_id: string
+          views_count?: number
+        }
+        Update: {
+          card_data?: Json
+          created_at?: string
+          id?: string
+          share_token?: string
+          user_id?: string
+          views_count?: number
+        }
+        Relationships: []
+      }
+      suggestions: {
+        Row: {
+          admin_reply: string | null
+          category: string
+          created_at: string
+          id: string
+          message: string
+          status: string
+          upvotes: number
+          user_id: string
+        }
+        Insert: {
+          admin_reply?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          message: string
+          status?: string
+          upvotes?: number
+          user_id: string
+        }
+        Update: {
+          admin_reply?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          message?: string
+          status?: string
+          upvotes?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
