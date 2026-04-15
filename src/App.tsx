@@ -12,13 +12,13 @@ import AuthCallback from "@/pages/auth/AuthCallback";
 import OnboardingWelcome from "@/pages/onboarding/OnboardingWelcome";
 import OnboardingIncome from "@/pages/onboarding/OnboardingIncome";
 import OnboardingExpenses from "@/pages/onboarding/OnboardingExpenses";
+import ResultPage from "@/pages/result/ResultPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
 const ExpensesPage = () => <PlaceholderPage title="Gastos" />;
 const NewExpensePage = () => <PlaceholderPage title="Novo Gasto" />;
-const ResultPage = () => <PlaceholderPage title="Resultado" />;
 const SimulatorPage = () => <PlaceholderPage title="Simulador" />;
 const GoalsPage = () => <PlaceholderPage title="Metas" />;
 const SharePage = () => <PlaceholderPage title="Compartilhado" />;
