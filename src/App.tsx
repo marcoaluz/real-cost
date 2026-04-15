@@ -7,16 +7,14 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { PrivateRoute } from "@/components/auth/PrivateRoute";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { PlaceholderPage } from "@/pages/Placeholder";
+import LoginPage from "@/pages/auth/LoginPage";
+import AuthCallback from "@/pages/auth/AuthCallback";
+import OnboardingWelcome from "@/pages/onboarding/OnboardingWelcome";
+import OnboardingIncome from "@/pages/onboarding/OnboardingIncome";
+import OnboardingExpenses from "@/pages/onboarding/OnboardingExpenses";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-
-// Placeholder components for all routes
-const LoginPage = () => <PlaceholderPage title="Login" />;
-const AuthCallback = () => <PlaceholderPage title="Autenticando..." />;
-const OnboardingPage = () => <PlaceholderPage title="Bem-vindo" />;
-const OnboardingIncome = () => <PlaceholderPage title="Sua Renda" />;
-const OnboardingExpenses = () => <PlaceholderPage title="Seus Gastos" />;
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
 const ExpensesPage = () => <PlaceholderPage title="Gastos" />;
 const NewExpensePage = () => <PlaceholderPage title="Novo Gasto" />;
@@ -45,7 +43,7 @@ const App = () => (
           <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Onboarding */}
-          <Route path="/onboarding" element={<PrivateRoute><OnboardingPage /></PrivateRoute>} />
+          <Route path="/onboarding" element={<PrivateRoute><OnboardingWelcome /></PrivateRoute>} />
           <Route path="/onboarding/income" element={<PrivateRoute><OnboardingIncome /></PrivateRoute>} />
           <Route path="/onboarding/expenses" element={<PrivateRoute><OnboardingExpenses /></PrivateRoute>} />
 
