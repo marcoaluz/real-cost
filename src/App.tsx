@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { PrivateRoute } from "@/components/auth/PrivateRoute";
 import { AdminRoute } from "@/components/auth/AdminRoute";
+import { AdminLayout } from "@/components/layout/AdminLayout";
 import { PlaceholderPage } from "@/pages/Placeholder";
 import LoginPage from "@/pages/auth/LoginPage";
 import AuthCallback from "@/pages/auth/AuthCallback";
@@ -17,16 +18,16 @@ import ExpensesPage from "@/pages/expenses/ExpensesPage";
 import NewExpensePage from "@/pages/expenses/NewExpensePage";
 import SimulatorPage from "@/pages/simulator/SimulatorPage";
 import GoalsPage from "@/pages/goals/GoalsPage";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminSuggestions from "@/pages/admin/AdminSuggestions";
+import AdminEvents from "@/pages/admin/AdminEvents";
+import AdminMetrics from "@/pages/admin/AdminMetrics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
 const SharePage = () => <PlaceholderPage title="Compartilhado" />;
-const AdminDashboard = () => <PlaceholderPage title="Admin - Dashboard" />;
-const AdminUsers = () => <PlaceholderPage title="Admin - Usuários" />;
-const AdminSuggestions = () => <PlaceholderPage title="Admin - Sugestões" />;
-const AdminEvents = () => <PlaceholderPage title="Admin - Eventos" />;
-const AdminMetrics = () => <PlaceholderPage title="Admin - Métricas" />;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -60,11 +61,11 @@ const App = () => (
 
           {/* Admin */}
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
-          <Route path="/admin/suggestions" element={<AdminRoute><AdminSuggestions /></AdminRoute>} />
-          <Route path="/admin/events" element={<AdminRoute><AdminEvents /></AdminRoute>} />
-          <Route path="/admin/metrics" element={<AdminRoute><AdminMetrics /></AdminRoute>} />
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminLayout><AdminDashboard /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/users" element={<AdminRoute><AdminLayout><AdminUsers /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/suggestions" element={<AdminRoute><AdminLayout><AdminSuggestions /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/events" element={<AdminRoute><AdminLayout><AdminEvents /></AdminLayout></AdminRoute>} />
+          <Route path="/admin/metrics" element={<AdminRoute><AdminLayout><AdminMetrics /></AdminLayout></AdminRoute>} />
 
           {/* 404 */}
           <Route path="*" element={<NotFound />} />
