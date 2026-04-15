@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { AdminFloatingButton } from "@/components/layout/AdminFloatingButton";
 import { PrivateRoute } from "@/components/auth/PrivateRoute";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
@@ -18,6 +19,7 @@ import ExpensesPage from "@/pages/expenses/ExpensesPage";
 import NewExpensePage from "@/pages/expenses/NewExpensePage";
 import SimulatorPage from "@/pages/simulator/SimulatorPage";
 import GoalsPage from "@/pages/goals/GoalsPage";
+import SharePage from "@/pages/share/SharePage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminSuggestions from "@/pages/admin/AdminSuggestions";
@@ -27,13 +29,12 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
-const SharePage = () => <PlaceholderPage title="Compartilhado" />;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
+      <Sonner position="top-center" duration={3000} />
       <BrowserRouter>
         <Routes>
           {/* Root redirect */}
@@ -71,6 +72,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
+        <AdminFloatingButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
