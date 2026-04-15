@@ -2,7 +2,7 @@ export interface Profile {
   id: string;
   full_name: string | null;
   avatar_url: string | null;
-  plan: 'free' | 'pro';
+  plan: string;
   created_at: string;
 }
 
