@@ -2,6 +2,13 @@ import { useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/authStore';
 
+function detectPlatform(): string {
+  const ua = navigator.userAgent;
+  if (/android/i.test(ua)) return 'android';
+  if (/iphone|ipad/i.test(ua)) return 'ios';
+  return 'web';
+}
+
 export function useAuth() {
   const { setUser, setProfile, setIsAdmin, setIsLoading } = useAuthStore();
 
@@ -16,7 +23,7 @@ export function useAuth() {
           const { data: profile } = await supabase
             .from('profiles')
             .select('*')
-            .eq('id', user.id)
+            .eq('user_id', user.id)
             .single();
           setProfile(profile);
 
@@ -27,6 +34,18 @@ export function useAuth() {
             .eq('user_id', user.id)
             .single();
           setIsAdmin(!!adminRole);
+
+          // Track session
+          const platform = detectPlatform();
+          await supabase.from('user_sessions').upsert(
+            {
+              user_id: user.id,
+              platform,
+              device_info: navigator.userAgent,
+              last_seen_at: new Date().toISOString(),
+            },
+            { onConflict: 'user_id,platform' }
+          );
         } else {
           setProfile(null);
           setIsAdmin(false);
