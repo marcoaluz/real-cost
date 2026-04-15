@@ -43,7 +43,7 @@ const App = () => (
           <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Onboarding */}
-          <Route path="/onboarding" element={<PrivateRoute><OnboardingPage /></PrivateRoute>} />
+          <Route path="/onboarding" element={<PrivateRoute><OnboardingWelcome /></PrivateRoute>} />
           <Route path="/onboarding/income" element={<PrivateRoute><OnboardingIncome /></PrivateRoute>} />
           <Route path="/onboarding/expenses" element={<PrivateRoute><OnboardingExpenses /></PrivateRoute>} />
 
