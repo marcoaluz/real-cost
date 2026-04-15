@@ -22,7 +22,6 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
 const SharePage = () => <PlaceholderPage title="Compartilhado" />;
-const SharePage = () => <PlaceholderPage title="Compartilhado" />;
 const AdminDashboard = () => <PlaceholderPage title="Admin - Dashboard" />;
 const AdminUsers = () => <PlaceholderPage title="Admin - Usuários" />;
 const AdminSuggestions = () => <PlaceholderPage title="Admin - Sugestões" />;
