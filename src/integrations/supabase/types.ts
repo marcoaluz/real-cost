@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_notes: {
+        Row: {
+          admin_id: string
+          created_at: string
+          id: string
+          note: string
+          user_id: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          id?: string
+          note: string
+          user_id: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          id?: string
+          note?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       admin_roles: {
         Row: {
           created_at: string
@@ -258,6 +282,7 @@ export type Database = {
           created_at: string
           id: string
           message: string
+          replied_at: string | null
           status: string
           upvotes: number
           user_id: string
@@ -268,6 +293,7 @@ export type Database = {
           created_at?: string
           id?: string
           message: string
+          replied_at?: string | null
           status?: string
           upvotes?: number
           user_id: string
@@ -278,6 +304,7 @@ export type Database = {
           created_at?: string
           id?: string
           message?: string
+          replied_at?: string | null
           status?: string
           upvotes?: number
           user_id?: string
@@ -286,10 +313,74 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      admin_metrics_30d: {
+        Row: {
+          active_users: number | null
+          day: string | null
+          expenses_created: number | null
+          new_users: number | null
+          result_viewed: number | null
+          share_cards_created: number | null
+          simulator_used: number | null
+          upgrade_clicked: number | null
+          upgrade_completed: number | null
+        }
+        Relationships: []
+      }
+      admin_suggestions_ranked: {
+        Row: {
+          admin_reply: string | null
+          author_name: string | null
+          category: string | null
+          created_at: string | null
+          id: string | null
+          message: string | null
+          replied_at: string | null
+          status: string | null
+          upvotes: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      admin_users_overview: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          joined_at: string | null
+          last_active: string | null
+          plan: string | null
+          platform: string | null
+          total_expenses: number | null
+          total_shares: number | null
+          user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          joined_at?: string | null
+          last_active?: never
+          plan?: string | null
+          platform?: never
+          total_expenses?: never
+          total_shares?: never
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          joined_at?: string | null
+          last_active?: never
+          plan?: string | null
+          platform?: never
+          total_expenses?: never
+          total_shares?: never
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
