@@ -81,6 +81,7 @@ const App = () => (
         </Routes>
         <BottomNav />
         <AdminFloatingButton />
+        </AuthInit>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
