@@ -25,11 +25,11 @@ import AdminUsers from "@/pages/admin/AdminUsers";
 import AdminSuggestions from "@/pages/admin/AdminSuggestions";
 import AdminEvents from "@/pages/admin/AdminEvents";
 import AdminMetrics from "@/pages/admin/AdminMetrics";
+import DashboardPage from "@/pages/dashboard/DashboardPage";
 import NotFound from "./pages/NotFound";
 import { useAuth } from "@/hooks/useAuth";
 
 const queryClient = new QueryClient();
-const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
 
 const AuthInit = ({ children }: { children: React.ReactNode }) => {
   useAuth();
