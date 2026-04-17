@@ -26,9 +26,15 @@ import AdminSuggestions from "@/pages/admin/AdminSuggestions";
 import AdminEvents from "@/pages/admin/AdminEvents";
 import AdminMetrics from "@/pages/admin/AdminMetrics";
 import NotFound from "./pages/NotFound";
+import { useAuth } from "@/hooks/useAuth";
 
 const queryClient = new QueryClient();
 const DashboardPage = () => <PlaceholderPage title="Meu Custo Real" />;
+
+const AuthInit = ({ children }: { children: React.ReactNode }) => {
+  useAuth();
+  return <>{children}</>;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -36,6 +42,8 @@ const App = () => (
       <Toaster />
       <Sonner position="top-center" duration={3000} />
       <BrowserRouter>
+        <AuthInit>
+
         <Routes>
           {/* Root redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -73,6 +81,7 @@ const App = () => (
         </Routes>
         <BottomNav />
         <AdminFloatingButton />
+        </AuthInit>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
