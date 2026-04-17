@@ -8,25 +8,31 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error || !session) {
+        // PKCE: troca o code pela session
+        const { error } = await supabase.auth.exchangeCodeForSession(
+          window.location.href
+        );
+
+        if (error) {
           navigate('/auth/login', { replace: true });
           return;
         }
 
-        // Check if user has income registered
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+          navigate('/auth/login', { replace: true });
+          return;
+        }
+
         const { data: income } = await supabase
           .from('incomes')
           .select('id')
           .eq('user_id', session.user.id)
           .limit(1)
-          .single();
+          .maybeSingle();
 
-        if (income) {
-          navigate('/dashboard', { replace: true });
-        } else {
-          navigate('/onboarding', { replace: true });
-        }
+        navigate(income ? '/dashboard' : '/onboarding', { replace: true });
       } catch {
         navigate('/auth/login', { replace: true });
       }
