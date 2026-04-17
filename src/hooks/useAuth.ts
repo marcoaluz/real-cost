@@ -57,7 +57,7 @@ export function useAuth() {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) setIsLoading(false);
-    });
+    }).catch(() => setIsLoading(false));
 
     return () => subscription.unsubscribe();
   }, [setUser, setProfile, setIsAdmin, setIsLoading]);
