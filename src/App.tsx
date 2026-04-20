@@ -48,9 +48,9 @@ const App = () => (
           {/* Root redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-          {/* Auth */}
-          <Route path="/auth/login" element={<LoginPage />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
+          {/* Auth (desativada temporariamente) */}
+          <Route path="/auth/login" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/auth/callback" element={<Navigate to="/dashboard" replace />} />
 
           {/* Onboarding */}
           <Route path="/onboarding" element={<PrivateRoute><OnboardingWelcome /></PrivateRoute>} />
