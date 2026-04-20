@@ -27,8 +27,7 @@ function formatCurrencyInput(value: string): string {
   return num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function parseCurrencyInput(formatted: string): number {
-  const digits = formatted.replace(/\D/g, '');
+function parseCurrencyInput(digits: string): number {
   return parseInt(digits || '0', 10) / 100;
 }
 
@@ -151,28 +150,31 @@ export default function NewExpensePage() {
         </div>
 
         {/* Description */}
-        <div>
+        <div className="relative z-10">
           <p className="text-sm font-medium text-foreground mb-2">Descrição</p>
           <Input
+            type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="ex: Aluguel"
-            className="rounded-xl bg-card"
+            autoComplete="off"
+            className="rounded-xl bg-card relative z-10"
           />
         </div>
 
         {/* Amount */}
-        <div>
+        <div className="relative z-10">
           <p className="text-sm font-medium text-foreground mb-2">Valor</p>
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-lg font-semibold">R$</span>
+            <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-lg font-semibold z-10">R$</span>
             <input
               type="text"
-              inputMode="numeric"
-              value={amountRaw}
-              onChange={(e) => setAmountRaw(formatCurrencyInput(e.target.value))}
+              inputMode="decimal"
+              value={amountRaw ? formatCurrencyInput(amountRaw) : ''}
+              onChange={(e) => setAmountRaw(e.target.value.replace(/\D/g, ''))}
               placeholder="0,00"
-              className="w-full h-16 rounded-2xl bg-card border border-border pl-12 pr-4 text-2xl font-bold text-foreground text-center focus:outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground/50"
+              autoComplete="off"
+              className="relative w-full h-16 rounded-2xl bg-card border border-border pl-12 pr-4 text-2xl font-bold text-foreground text-center focus:outline-none focus:ring-2 focus:ring-ring placeholder:text-muted-foreground/50"
             />
           </div>
         </div>
