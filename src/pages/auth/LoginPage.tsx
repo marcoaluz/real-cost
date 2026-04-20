@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const { user, isLoading } = useAuthStore();
@@ -17,12 +18,13 @@ export default function LoginPage() {
   if (user) return <Navigate to="/dashboard" replace />;
 
   const handleGoogleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+    if (error) toast.error('Erro ao entrar com Google');
   };
 
   return (
