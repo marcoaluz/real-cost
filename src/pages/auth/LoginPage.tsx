@@ -18,13 +18,26 @@ export default function LoginPage() {
   if (user) return <Navigate to="/dashboard" replace />;
 
   const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-    if (error) toast.error('Erro ao entrar com Google');
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+
+      if (error) {
+        console.error('OAuth error:', error);
+        toast.error('Erro ao entrar com Google: ' + error.message);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error('Erro inesperado ao tentar login');
+    }
   };
 
   return (
