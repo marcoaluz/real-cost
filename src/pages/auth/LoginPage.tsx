@@ -2,6 +2,7 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const { user, isLoading } = useAuthStore();
