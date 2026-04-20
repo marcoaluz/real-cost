@@ -18,11 +18,14 @@ export default function LoginPage() {
   if (user) return <Navigate to="/dashboard" replace />;
 
   const handleGoogleLogin = async () => {
+    const redirectTo = `${window.location.origin}/auth/callback`;
+    console.log('[Auth] Iniciando login Google', { redirectTo, origin: window.location.origin });
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
@@ -30,13 +33,36 @@ export default function LoginPage() {
         },
       });
 
+      console.log('[Auth] Resposta signInWithOAuth:', { data, error });
+
       if (error) {
-        console.error('OAuth error:', error);
-        toast.error('Erro ao entrar com Google: ' + error.message);
+        const details = {
+          name: (error as any).name,
+          message: error.message,
+          status: (error as any).status,
+          code: (error as any).code,
+          full: error,
+        };
+        console.error('[Auth] OAuth error completo:', details);
+        toast.error(
+          `Erro Google [${details.status ?? '?'}${details.code ? ' / ' + details.code : ''}]: ${error.message}`,
+          { duration: 10000 }
+        );
+        return;
       }
-    } catch (err) {
-      console.error('Unexpected error:', err);
-      toast.error('Erro inesperado ao tentar login');
+
+      if (data?.url) {
+        console.log('[Auth] Redirecionando para:', data.url);
+      } else {
+        console.warn('[Auth] Nenhuma URL de redirect retornada pelo Supabase');
+        toast.error('Supabase não retornou URL de redirect. Verifique o provider Google no backend.', { duration: 10000 });
+      }
+    } catch (err: any) {
+      console.error('[Auth] Exceção inesperada:', err);
+      toast.error(
+        `Exceção: ${err?.name ?? 'Error'} — ${err?.message ?? String(err)}`,
+        { duration: 10000 }
+      );
     }
   };
 
