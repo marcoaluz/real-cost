@@ -168,20 +168,22 @@ export default function ResultPage() {
       const share_token = genToken();
       const { data, error } = await supabase
         .from('share_cards')
-        .insert({
-          user_id: user.id,
-          share_token,
-          card_data: {
-            summary,
-            expensesByCategory,
-            salary,
-            categories: expensesByCategory,
-            total_expenses: summary.total_expenses,
-            balance: summary.balance,
-            work_days_cost: summary.work_days_cost,
-            biggest_category: summary.biggest_category,
+        .insert([
+          {
+            user_id: user.id,
+            share_token,
+            card_data: {
+              summary: summary as any,
+              expensesByCategory,
+              salary,
+              categories: expensesByCategory,
+              total_expenses: summary.total_expenses,
+              balance: summary.balance,
+              work_days_cost: summary.work_days_cost,
+              biggest_category: summary.biggest_category,
+            } as any,
           },
-        })
+        ])
         .select('share_token')
         .single();
 
