@@ -51,6 +51,14 @@ export default function OnboardingExpenses() {
     setSaving(true);
 
     try {
+      // Delete existing expenses for the period to avoid duplicates
+      await supabase
+        .from('expenses')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('reference_month', currentMonth)
+        .eq('reference_year', currentYear);
+
       // Build expense rows
       const expenseRows = filledCategories.map((c) => ({
         user_id: user.id,
@@ -84,17 +92,20 @@ export default function OnboardingExpenses() {
       }));
       const biggestCategory = calcBiggestCategory(expenses);
 
-      // Save monthly summary
-      await supabase.from('monthly_summaries').insert({
-        user_id: user.id,
-        reference_month: currentMonth,
-        reference_year: currentYear,
-        total_income: totalIncome,
-        total_expenses: totalExpenses,
-        balance,
-        work_days_cost: workDaysCost,
-        biggest_category: biggestCategory,
-      });
+      // Save monthly summary (upsert)
+      await supabase.from('monthly_summaries').upsert(
+        {
+          user_id: user.id,
+          reference_month: currentMonth,
+          reference_year: currentYear,
+          total_income: totalIncome,
+          total_expenses: totalExpenses,
+          balance,
+          work_days_cost: workDaysCost,
+          biggest_category: biggestCategory,
+        },
+        { onConflict: 'user_id,reference_month,reference_year' }
+      );
 
       // Track event
       await supabase.from('app_events').insert({
