@@ -9,55 +9,64 @@ function detectPlatform(): string {
   return 'web';
 }
 
+async function loadUserExtras(userId: string) {
+  try {
+    const [{ data: profile }, { data: adminRole }] = await Promise.all([
+      supabase.from('profiles').select('*').eq('user_id', userId).maybeSingle(),
+      supabase.from('admin_roles').select('id').eq('user_id', userId).maybeSingle(),
+    ]);
+
+    useAuthStore.getState().setProfile(profile ?? null);
+    useAuthStore.getState().setIsAdmin(!!adminRole);
+
+    supabase
+      .from('user_sessions')
+      .upsert(
+        {
+          user_id: userId,
+          platform: detectPlatform(),
+          device_info: navigator.userAgent,
+          last_seen_at: new Date().toISOString(),
+        },
+        { onConflict: 'user_id,platform' },
+      )
+      .then(() => {});
+  } catch (err) {
+    console.error('[Auth] loadUserExtras error', err);
+  }
+}
+
 export function useAuth() {
   const { setUser, setProfile, setIsAdmin, setIsLoading } = useAuthStore();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+    // 1. Listener FIRST (sync only — defer async work to avoid deadlocks)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const user = session?.user ?? null;
+      setUser(user);
+      setIsLoading(false);
+
+      if (user) {
+        setTimeout(() => loadUserExtras(user.id), 0);
+      } else {
+        setProfile(null);
+        setIsAdmin(false);
+      }
+    });
+
+    // 2. Then check existing session
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
         const user = session?.user ?? null;
         setUser(user);
-
-        if (user) {
-          // Fetch profile
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('*')
-          .eq('id', user.id)
-            .single();
-          setProfile(profile);
-
-          // Check admin
-          const { data: adminRole } = await supabase
-            .from('admin_roles')
-            .select('id')
-            .eq('user_id', user.id)
-            .single();
-          setIsAdmin(!!adminRole);
-
-          // Track session
-          const platform = detectPlatform();
-          await supabase.from('user_sessions').upsert(
-            {
-              user_id: user.id,
-              platform,
-              device_info: navigator.userAgent,
-              last_seen_at: new Date().toISOString(),
-            },
-            { onConflict: 'user_id,platform' }
-          );
-        } else {
-          setProfile(null);
-          setIsAdmin(false);
-        }
-
         setIsLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) setIsLoading(false);
-    }).catch(() => setIsLoading(false));
+        if (user) setTimeout(() => loadUserExtras(user.id), 0);
+      })
+      .catch((err) => {
+        console.error('[Auth] getSession error', err);
+        setIsLoading(false);
+      });
 
     return () => subscription.unsubscribe();
   }, [setUser, setProfile, setIsAdmin, setIsLoading]);
