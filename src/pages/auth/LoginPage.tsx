@@ -3,17 +3,12 @@ import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/authStore';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { LoadingScreen } from '@/components/layout/LoadingScreen';
 
 export default function LoginPage() {
   const { user, isLoading } = useAuthStore();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-      </div>
-    );
-  }
+  if (isLoading) return <LoadingScreen message="Carregando..." />;
 
   if (user) return <Navigate to="/dashboard" replace />;
 

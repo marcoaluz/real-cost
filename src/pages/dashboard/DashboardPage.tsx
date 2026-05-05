@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TrendingDown, Wallet, Calendar, ChevronRight, BarChart3, Receipt, Sparkles } from 'lucide-react';
+import { TrendingDown, Wallet, Calendar, ChevronRight, BarChart3, Receipt, Sparkles, LogOut } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
@@ -63,7 +64,23 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background pb-24">
-      <Header title="Meu Custo Real" />
+      <Header
+        title="Meu Custo Real"
+        rightAction={
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut();
+              toast.success('Sessão encerrada');
+              navigate('/auth/login', { replace: true });
+            }}
+            className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-sm"
+            aria-label="Sair"
+          >
+            <LogOut size={18} />
+            <span>Sair</span>
+          </button>
+        }
+      />
 
       <div className="px-4 pt-4 space-y-6">
         <div>
