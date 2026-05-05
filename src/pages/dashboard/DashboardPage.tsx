@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { TrendingDown, Wallet, Calendar, ChevronRight, BarChart3, Receipt, Sparkles } from 'lucide-react';
+import { TrendingDown, Wallet, Calendar, ChevronRight, BarChart3, Receipt, Sparkles, LogOut } from 'lucide-react';
+import { toast } from 'sonner';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/authStore';
 import { useAppStore } from '@/store/appStore';
