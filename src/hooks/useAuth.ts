@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 import { useAuthStore } from '@/store/authStore';
 
@@ -38,6 +39,7 @@ async function loadUserExtras(userId: string) {
 
 export function useAuth() {
   const { setUser, setProfile, setIsAdmin, setIsLoading } = useAuthStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 1. Listener FIRST (sync only — defer async work to avoid deadlocks)
@@ -47,10 +49,16 @@ export function useAuth() {
       setIsLoading(false);
 
       if (user) {
+        if (window.location.pathname === '/auth/login' || window.location.pathname === '/auth/callback') {
+          navigate('/', { replace: true });
+        }
         setTimeout(() => loadUserExtras(user.id), 0);
       } else {
         setProfile(null);
         setIsAdmin(false);
+        if (window.location.pathname !== '/auth/login' && window.location.pathname !== '/auth/callback') {
+          navigate('/auth/login', { replace: true });
+        }
       }
     });
 
@@ -69,7 +77,7 @@ export function useAuth() {
       });
 
     return () => subscription.unsubscribe();
-  }, [setUser, setProfile, setIsAdmin, setIsLoading]);
+  }, [navigate, setUser, setProfile, setIsAdmin, setIsLoading]);
 
   return useAuthStore();
 }
