@@ -6,46 +6,26 @@ export default function AuthCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        // PKCE: troca o code pela session
-        const { error } = await supabase.auth.exchangeCodeForSession(
-          window.location.href
-        );
-
+    supabase.auth.exchangeCodeForSession(window.location.href)
+      .then(({ error }) => {
         if (error) {
+          console.error('Auth callback error:', error);
           navigate('/auth/login', { replace: true });
-          return;
+        } else {
+          navigate('/', { replace: true });
         }
-
-        const { data: { session } } = await supabase.auth.getSession();
-
-        if (!session) {
-          navigate('/auth/login', { replace: true });
-          return;
-        }
-
-        const { data: income } = await supabase
-          .from('incomes')
-          .select('id')
-          .eq('user_id', session.user.id)
-          .limit(1)
-          .maybeSingle();
-
-        navigate(income ? '/dashboard' : '/onboarding', { replace: true });
-      } catch {
+      })
+      .catch((error) => {
+        console.error('Auth callback error:', error);
         navigate('/auth/login', { replace: true });
-      }
-    };
-
-    handleCallback();
+      });
   }, [navigate]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="flex flex-col items-center gap-4">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        <p className="text-muted-foreground text-sm">Autenticando...</p>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background gap-6 px-6">
+      <div className="flex items-center gap-2">
+        <div className="h-10 w-10 animate-pulse rounded-2xl bg-primary" />
+        <h1 className="text-2xl font-bold text-foreground">Verificando sua sessão...</h1>
       </div>
     </div>
   );
