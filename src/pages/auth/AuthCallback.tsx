@@ -14,10 +14,6 @@ export default function AuthCallback() {
         } else {
           navigate('/', { replace: true });
         }
-      })
-      .catch((error) => {
-        console.error('Auth callback error:', error);
-        navigate('/auth/login', { replace: true });
       });
   }, [navigate]);
 
