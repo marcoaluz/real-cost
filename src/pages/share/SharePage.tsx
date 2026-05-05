@@ -38,8 +38,11 @@ export default function SharePage() {
       setCard(data);
       setLoading(false);
 
-      // Increment views
-      await supabase.rpc('increment_share_views', { token });
+      // Increment views (direct update)
+      await supabase
+        .from('share_cards')
+        .update({ views_count: (data.views_count || 0) + 1 })
+        .eq('share_token', token);
     };
     load();
   }, [token]);
